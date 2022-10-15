@@ -26,6 +26,10 @@ a clinical setting.
 # Prerequisites
 See https://github.com/nrc-cnrc/EGSnrc to download the EGSnrc package
 
+A few Code Modifications of the EGSnrc package is needed for the input files provided to work.
+1.  The density correction files provided have to be placed in the folder $HEN_HOUSE/pegs4/density_corrections/compounds/  ie. cp density_files/* $HEN_HOUSE/pegs4/density_corrections/compounds/. from within this github folder
+2.  The max_stack size has to be increased to 7000000 in the array_sizes.h file in the application you will be using (eg. tutor7pp)
+
 
 # egsinp files
 The collimator files are designed to be used in the tutor7pp package of the C++ AdvancedApplication app in egsnrc package. The collimators are described in further detail in the .egsinp files
