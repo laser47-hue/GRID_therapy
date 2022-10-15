@@ -1,13 +1,14 @@
 #############################################################
 #############################################################
-# Work of Marcus Fisk, David Pfefferle
+# Work of Marcus Fisk, Dr. David Pfefferle, Dr. Pejman Rowshanfarzad, Adj/Prof. Martin Ebert
+# University of Western Australia
 # Last updated 15/10/2022
 # Please cite this work using the doi : __________________________
 # this should be run in the tutor7pp package by command line 
 # tutor7pp -i 10mm_col_input_file.egsinp 
 # from the $EGS_HOME/tutor7pp folder
 
-# Note..... you may have to increase the MAX STACK size in array_sizes.h inside the tutor7pp application and then recompile using make clean then make for this code to work
+# Note..... you may have to increase the MAX STACK size to 7000000 in array_sizes.h inside the tutor7pp application and then recompile using make clean then make for this code to work
 
 # A phasespace will be produced with the name ver.egsphsp1
 
