@@ -1,3 +1,19 @@
+#############################################################
+#############################################################
+# Work of Marcus Fisk, David Pfefferle
+# Last updated 15/10/2022
+# Please cite this work using the doi : __________________________
+# this should be run in the tutor7pp package by command line 
+# tutor7pp -i 10mm_col_input_file.egsinp 
+# from the $EGS_HOME/tutor7pp folder
+
+# Note..... you may have to increase the MAX STACK size in array_sizes.h inside the tutor7pp application and then recompile using make clean then make for this code to work
+
+# A phasespace will be produced with the name ver.egsphsp1
+
+
+
+
 :start run control:
 ncase = 5e11
 
@@ -599,8 +615,6 @@ rotation vector = 1, 0 ,0
 
 :start scoring options:
 russian roulette = 8000
-pulse height regions =32  
-pulse height bins = 10
 deflect electron after brems = yes
 :stop scoring options:
 
@@ -618,10 +632,5 @@ score particles on       = entry
 
 :stop ausgab object:
 
-# :start ausgab object:
-#     library = egs_track_scoring
-#     name    = some_name
-
-# :stop ausgab object:
 :stop ausgab object definition:
 
