@@ -1,0 +1,627 @@
+:start run control:
+ncase = 5e11
+
+max cpu hours allowed       = 60
+geometry error limit = 60
+nbatch=10
+:stop run control:
+:start rng definition:
+type=ranmar
+initial seed=3500 576
+:stop rng definition:
+:start geometry definition:
+
+
+##################################################
+#MAKE THE TARGET
+#################################################
+:start geometry:
+name        = my_anode
+library     = egs_box
+box size    = 2 2 2
+:start media input:
+media = W521ICRU
+set medium = 0 0
+:stop media input:
+:stop geometry:
+
+:start geometry:
+name        = my_anodeCu
+library     = egs_box
+box size    = 2.5 2 2
+:start media input:
+media = CU521ICRU
+set medium = 0 0
+:stop media input:
+:stop geometry:
+
+:start geometry:
+name        = target_angle_planes
+library     = egs_planes
+type=EGS_Planes
+positions=0 0.5 .6
+normal= 1 0 -0.577350269
+#30 degrees tan(30)
+:stop geometry:
+:start geometry:
+name= my_target
+library=egs_cdgeometry
+base geometry=target_angle_planes
+set geometry=0 my_anode
+set geometry =1 my_anodeCu
+:stop geometry:
+
+###################################################
+###################################################
+#MAKE OPENING WINDOW
+###################################################
+###################################################
+:start geometry:
+library = egs_cones
+type = EGS_ConeStack
+name = be_window
+axis = 0 0 3.56 0 0 1
+:start layer:
+thickness = 0.1 
+top radii = 1.425
+bottom radii = 1.425
+media =  vacuum
+:stop layer:
+:start layer:
+thickness = 0.08 
+top radii = 1.425
+bottom radii = 1.425
+media =  BE521ICRU
+:stop layer:
+
+:start layer:
+thickness = 0.6 
+bottom radii = 1.57 1.77
+top radii = 1.225 1.425
+media =  AIR521ICRU PB521ICRU
+
+:stop layer:
+
+:start layer:
+thickness = 0.6 
+bottom radii =1.77
+top radii = 1.77
+media =  AIR521ICRU 
+
+:stop layer:
+
+:stop geometry:
+
+:start geometry:
+name        = temp_tube_bottom
+library     = egs_box
+box size    = 8.1 7  .68  #was .59
+:start media input:
+media = PB521ICRU
+:stop media input:
+:stop geometry:
+
+:start geometry:
+name        = tube_bottom
+library     = egs_gtransformed
+my geometry = temp_tube_bottom
+:start transformation:
+translation = 1.29 0 4
+:stop transformation:
+:stop geometry:
+
+
+:start geometry:
+name        = temp_tube_air
+library     = egs_box
+box size    = 8.1 7 1
+:start media input:
+media = AIR521ICRU
+:stop media input:
+:stop geometry:
+
+:start geometry:
+name        = tube_air
+library     = egs_gtransformed
+my geometry = temp_tube_air
+:start transformation:
+translation = 1.29 0 4.5
+:stop transformation:
+:stop geometry:
+
+:start geometry:
+name        = temp_tube_fill
+library     = egs_box
+box size    = .2 5  .4
+:start media input:
+media = PB521ICRU
+:stop media input:
+:stop geometry:
+
+:start geometry:
+name        = tube_fill
+library     = egs_gtransformed
+my geometry = temp_tube_fill
+:start transformation:
+translation = -2.75 0 4.4
+:stop transformation:
+:stop geometry:
+
+:start geometry:
+library = egs_cones
+type = EGS_ConeStack
+name = Cu_insert
+axis = 0 0 8.6  0 0 1
+:start layer:
+thickness = .03
+bottom radii = 3 4.2
+top radii =  3 4.2
+media =  CU521ICRU AL521ICRU
+
+
+:stop layer:
+
+:stop geometry:
+
+
+:start geometry:
+name        = flat_part_of_tube_bottom
+library     = egs_gunion
+geometries  = be_window tube_bottom  tube_fill  tube_air
+:stop geometry:
+
+###################################################
+###################################################
+
+###################################################
+###################################################
+#####Make Shells
+###################################################
+###################################################
+
+
+:start geometry:
+library = egs_cones
+type = EGS_ConeStack
+name = tube_outer_shell
+axis = 5.25 0 0 -1 0 0
+:start layer:
+thickness = 1
+bottom radii = 5
+top radii =  5
+media =  PB521ICRU
+
+
+:stop layer:
+:start layer:
+thickness = 7
+bottom radii = 4.6 5
+top radii =  4.6 5
+media =  vacuum PB521ICRU
+
+
+:stop layer:
+:start layer:
+thickness = 0.9
+bottom radii = 5.925 6.225 
+top radii = 4.5 5
+media =  vacuum PB521ICRU
+
+:stop layer:
+
+:start layer:
+thickness = 0.5
+bottom radii = 5.925 6.225 
+top radii =  5.925 6.225
+media =  vacuum PB521ICRU
+
+:stop layer:
+
+
+
+
+
+:stop geometry:
+
+:stop geometry:
+
+:start geometry:
+library = egs_cones
+type = EGS_ConeStack
+name = air_regions_to_hold_collimation_setup
+axis = 0 0 4 0 0 1
+#Start at xray tube
+:start layer:
+thickness = 2.5
+bottom radii = 4.3
+top radii =  2
+media =  AIR521ICRU
+:stop layer:
+#y_jaws
+:start layer:
+thickness = 1
+bottom radii = 4.3
+top radii =  4.3
+media =  AIR521ICRU
+:stop layer:
+#x_jaws
+:start layer:
+thickness = 1
+bottom radii = 4.3
+top radii =  4.3
+media =  AIR521ICRU
+:stop layer:
+        #air
+        #this next layer starts at -8.5
+        #must be greater than 1
+:start layer:
+thickness = 0.5
+bottom radii = 4.3
+top radii =  4.3
+media =  AIR521ICRU
+:stop layer:
+
+
+:stop geometry:
+
+##################
+######################
+###########################
+
+
+
+:start geometry:
+name        = temp_box
+library     = egs_box
+box size    = 30 30 30
+:start media input:
+media = AIR521ICRU
+:stop media input:
+:stop geometry:
+
+
+:start geometry:
+name        = slab_of_air_to_hold_phsp
+library     = egs_gtransformed
+my geometry = temp_box
+:start transformation:
+translation = 0 0 27.2
+:stop transformation:
+:stop geometry:
+
+:start geometry:
+name        = temp_phsp
+library     = egs_box
+box size    = 28 28  .01
+:start media input:
+media = AIR521ICRU
+:stop media input:
+:stop geometry:
+
+
+:start geometry:
+name        = the_phsp
+library     = egs_gtransformed
+my geometry = temp_phsp
+:start transformation:
+translation = 0 0 26.53
+:stop transformation:
+:stop geometry:
+
+
+
+###################################
+####################################
+##########################
+:start geometry:
+library = egs_planes
+type    = EGS_PlaneCollection
+name    = x_jaws
+normals = 1,0,0    0.98697,0,0.160902 0.98697,0,-0.160902 1,0,0
+positions = -5  0  0   5
+:start media input:
+media = PB521ICRU AIR521ICRU
+set medium = 0 2 0
+set medium = 1 1
+:stop media input:
+:stop geometry:
+
+
+:start geometry:
+library = egs_planes
+type    = EGS_PlaneCollection
+name    = y_jaws
+normals = 0,1,0   0, 0.98697,0.160902 0, 0.98697,-0.160902  0,1,0
+positions = -5  0  0   5
+:start media input:
+media = PB521ICRU AIR521ICRU
+set medium = 0 2 0
+set medium = 1 1
+:stop media input:
+:stop geometry:
+
+
+#################################################
+#################################################
+#################Collimator########################
+
+
+
+:start geometry:
+name        = middle_of_collimator
+library     = egs_roundrect_cylinders
+type = EGS_RoundRectCylindersXY
+x-widths=1.975 2.5 20
+y-widths=1.975 2.5 20
+radii=.5 0.5 0.02
+:start media input:
+media = YELBRASS521ICRU AIR521ICRU
+set medium = 0 1
+set medium=1 0
+set medium=2 1
+:stop media input:
+:stop geometry:
+
+:start geometry:
+name        = top_hole_of_collimator
+library     = egs_roundrect_cylinders
+type = EGS_RoundRectCylindersXY
+x-widths=0.7365 19 20 #0.2206 19 20
+y-widths=0.7365 19 20 #0.2206 19 20
+radii=.01 0.5 0.02
+:start media input:
+media = PBSBICU521 AIR521ICRU
+set medium = 0 1
+set medium=1 0
+set medium =2 1
+:stop media input:
+:stop geometry:
+
+:start geometry:
+name        = bottom_hole_of_collimator
+library     = egs_roundrect_cylinders
+type = EGS_RoundRectCylindersXY
+x-widths=0.38625 2.5 20#0.3673 2.5 20
+y-widths=0.38625 2.5 20 #0.3673 2.5 20
+radii=.01 0.5 0.02
+:start media input:
+media = PBSBICU521 AIR521ICRU
+set medium = 0 1
+set medium=1 0
+set medium = 2 1
+:stop media input:
+:stop geometry:
+
+
+:start geometry:
+name        = very_bottom_hole_of_collimator
+library     = egs_roundrect_cylinders
+type = EGS_RoundRectCylindersXY
+x-widths=0.38625 2.5 20 # 0.3673 2.5 20
+y-widths=0.38625 2.5 20 # 0.3673 2.5 20
+radii=.01 0.5 0.02
+:start media input:
+media = YELBRASS521ICRU AIR521ICRU
+set medium = 0 1
+set medium=1 0
+set medium = 2 1
+:stop media input:
+:stop geometry:
+
+:start geometry:
+library = egs_genvelope
+base geometry = slab_of_air_to_hold_phsp
+inscribed geometries = the_phsp
+name = phsp_in_slab
+:stop geometry:
+
+:start geometry:
+name=everything_outside_tube
+library=egs_cdgeometry
+base geometry=air_regions_to_hold_collimation_setup
+set geometry =1 y_jaws
+set geometry=2 x_jaws
+    
+:stop geometry:
+
+##########################
+##########################
+
+:start geometry:
+name        = final_geometry
+library     = egs_gunion
+geometries = Cu_insert flat_part_of_tube_bottom my_target tube_outer_shell everything_outside_tube 
+:stop geometry:
+
+
+
+simulation geometry = final_geometry
+
+
+
+:stop geometry definition:
+
+
+
+#  Modify here parameters that should be different from their defaults.
+:start MC transport parameter:
+Global ECUT                    = 0.536          # Global electron transport cutoff
+Global PCUT                    = 0.025          # Global photon transport cutoff
+# Global SMAX                    = 1e10           # Global maximum step-size restriction for e- transport
+ESTEPE                         = 0.25           # Default is 0.25
+#XIMAX                          = 0.05            # Default is 0.5, max. value is 1.
+Boundary crossing algorithm    = exact          # exact (default), PRESTA-I
+Skin depth for BCA             = 3              # Default value is 3 for exact boundary crossing
+Electron-step algorithm        = PRESTA-II      # PRESTA-II (default),PRESTA-I
+Spin effects                   = On             # On (default),Off
+Brems angular sampling         = KM             # Simple,KM (default)
+Brems cross sections           = NIST             # BH (default),NIST
+Pair angular sampling          = KM         # Off, Simple (default),KM
+Triplet production             = On            # On or Off (default)
+Electron Impact Ionization     = On            # On, Off (default), casnati, kolbenstvedt, gryzinski
+Bound Compton scattering       = norej          # On, Off, Simple, norej (default)
+# Radiative Compton corrections  = Off            # On,  Off (default)
+Rayleigh scattering            = On            # On ,Off (default), custom
+# Photoelectron angular sampling = On             # On (default),Off
+# Atomic relaxations             = On             # On (default),Off
+# Photon cross sections          = xcom           # si, epdl, xcom (default) or user-supplied
+# Photon cross-sections output   = Off            # Off (default) or On
+# #Compton cross sections         = comp_xsections # user-supplied
+# Photonuclear attenuation       = Off            # Off (default) or On
+# Photonuclear cross sections    = default        # default (default) or user-supplied
+:stop MC transport parameter:
+################################
+### SOURCE
+################################
+:start source definition: 
+
+# :start shape:
+#     type = cylinder
+#     radius = 0.2368
+#     height = 0.001
+#     midpoint = -0.1, 0,0
+#     axis = 1,0,0
+# :stop shape:
+# :start shape:
+#        type = box
+#        box size = 0.001  0.4736
+#        :start transformation:
+#        translation = -.1 0 0
+#        :stop transformation:
+#        :stop shape:
+
+# :start source:
+
+#        library=egs_parallel_beam
+#        name=my_source
+#        direction = 1 0 0
+#        charge = -1
+#        :start shape:
+#        library=egs_gaussian_shape
+.536#        :start shape:
+#     type = cylinder
+#     radius = 0.2368
+#     height = 0.001
+#     midpoint = -0.1, 0,0
+#     axis = 1,0,0
+# :stop shape:
+
+#        sigma=0 0 0 
+#        :stop shape:
+#        :start spectrum:
+#        type = monoenergetic
+#        energy=0.225
+#        :stop spectrum:
+# :stop source:
+
+:start source: 
+library=egs_parallel_beam
+name=my_source
+direction = 1 0 0
+charge = -1
+:start spectrum:
+type = monoenergetic
+energy=0.225
+:stop spectrum:
+:start shape:
+library = egs_rectangle
+rectangle = -.238 -0.15 .238 0.15 #x1 y1 x2 y2 -0.238 -0.053 0.238 0.053
+
+
+:start transformation:
+translation = -.5, 0, 0
+rotation vector = 1, 0 ,0  
+:stop transformation:
+:stop shape:
+:stop source:
+
+
+        simulation source = my_source
+
+
+:stop source definition:
+:start media definition:
+
+               
+    ### energy cutoffs
+    ae = 0.536
+    ue = 0.770
+    ap = 0.025
+    up = 0.250
+
+   
+    :start AL521ICRU:
+             density correction file = aluminum
+    :stop AL521ICRU:
+    :start AIR521ICRU:
+             density correction file = air_dry_nearsealevel
+    :stop AIR521ICRU:
+
+    :start W521ICRU:
+             density correction file = tungsten
+    :stop W521ICRU:
+
+    :start CU521ICRU:
+             density correction file = copper
+    :stop CU521ICRU:
+
+    :start PB521ICRU:
+             density correction file = lead
+    :stop PB521ICRU:
+    :start BE521ICRU:
+             density correction file = beryllium 
+    :stop BE521ICRU:
+    :start PMMA521ICRU:
+             density correction file = polymethylmethacrylate__lucite___perspex___plexiglas_
+    :stop PMMA521ICRU:
+    :start YELBRASS521ICRU:
+             density correction file = copperalloy_yellowbrass
+    :stop YELBRASS521ICRU:
+    :start PBSBICU521:
+                          density correction file = LEADANTIMONY
+    :stop PBSBICU521:            
+
+:stop media definition:
+
+:start view control:
+               set color = AIR521ICRU  2 200 20 70
+    set color = W521ICRU 181 172 159 254
+    set color = CU521ICRU 184 115 51 254
+    set color = BE521ICRU 139 129 135 254
+    set color = PB521ICRU 108 108 106 254
+    set color = AL521ICRU 136 139 141 254
+    set color = YELBRASS521ICRU 136 139 141 254
+    set color = PBSBICU521 108 108 106 254
+    set color background = 108 108 108 255 
+     
+:stop view control:
+
+
+:start scoring options:
+russian roulette = 8000
+pulse height regions =32  
+pulse height bins = 10
+deflect electron after brems = yes
+:stop scoring options:
+
+
+:start ausgab object definition:
+
+
+:start ausgab object:
+library = egs_phsp_scoring
+name = ver
+particle type = all
+phase space geometry     = the_phsp
+score particles on       = entry
+
+
+:stop ausgab object:
+
+# :start ausgab object:
+#     library = egs_track_scoring
+#     name    = some_name
+
+# :stop ausgab object:
+:stop ausgab object definition:
+
