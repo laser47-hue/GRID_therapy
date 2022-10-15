@@ -31,8 +31,19 @@ A few Code Modifications of the EGSnrc package is needed for the input files pro
 2.  The max_stack size has to be increased to 7000000 in the array_sizes.h file in the application you will be using (eg. tutor7pp)
 
 
-# egsinp files
+# .egsinp files
 The collimator files are designed to be used in the tutor7pp package of the C++ AdvancedApplication app in egsnrc package. The collimators are described in further detail in the .egsinp files
+
+### 10 mm at isocentre XRAD collimator
+
+![10mm_col](https://user-images.githubusercontent.com/63790873/195986300-210e76a5-4fc6-4c50-b10c-92a13f80ca4e.png)
+
+
+### GRID XRAD collimator
+
+![GRID](https://user-images.githubusercontent.com/63790873/195986321-f94cdcc5-620c-4ca3-a560-a46fea51eff7.png)
+
+
 
 # Film Results
 To see film results see the paper doi: _________________
