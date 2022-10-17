@@ -50,7 +50,3 @@ To see film results see the paper doi: _________________
 
 # Support 
 Please contact me via github for any inquiries
-
-# Contributing
-You can contribute to this work. 
-
